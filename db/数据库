@@ -1,0 +1,181 @@
+/*==============================================================*/
+/* DBMS name:      MySQL 5.0                                    */
+/* Created on:     2019/12/10 10:59:41                          */
+/*==============================================================*/
+
+
+drop table if exists member;
+
+drop table if exists member_car;
+
+drop table if exists member_fav;
+
+drop table if exists member_point;
+
+drop table if exists member_profile;
+
+drop table if exists member_profile_log;
+
+drop table if exists member_tag;
+
+drop table if exists member_token;
+
+/*==============================================================*/
+/* Table: member                                                */
+/*==============================================================*/
+create table member
+(
+   id                   bigint not null auto_increment,
+   username             varchar(50),
+   password             varchar(50),
+   source               tinyint,
+   primary key (id)
+);
+
+/*==============================================================*/
+/* Table: member_car                                            */
+/*==============================================================*/
+create table member_car
+(
+   id                   bigint not null auto_increment,
+   member_id            bigint,
+   brand_id             int,
+   make_id              int,
+   model_id             int,
+   car_id               int,
+   buy_year             int,
+   current_mileage      int,
+   remark               varchar(500),
+   type                 tinyint comment '1：已有座驾
+            2：期望座驾',
+   create_time          int(11),
+   last_update_time     int(11),
+   primary key (id)
+);
+
+/*==============================================================*/
+/* Table: member_fav                                            */
+/*==============================================================*/
+create table member_fav
+(
+   id                   bigint not null auto_increment,
+   member_id            bigint,
+   fav_type             tinyint comment '1：资讯
+            2：活动
+            3：车系',
+   content_id           bigint,
+   fav_time             int(11),
+   fav_ip               varchar(50),
+   primary key (id)
+);
+
+/*==============================================================*/
+/* Table: member_point                                          */
+/*==============================================================*/
+create table member_point
+(
+   id                   bigint not null auto_increment,
+   member_id            bigint,
+   point                int,
+   type                 int,
+   description          varchar(1000),
+   remark               varchar(1000),
+   create_time          int(11),
+   primary key (id)
+);
+
+/*==============================================================*/
+/* Table: member_profile                                        */
+/*==============================================================*/
+create table member_profile
+(
+   id                   bigint not null,
+   nickname             varchar(50),
+   name                 varchar(20),
+   gender               tinyint comment '0：全部
+            1：男
+            2：女',
+   level                int,
+   avatar_url           varchar(500),
+   mobile_code          varchar(10),
+   mobile               varchar(50),
+   email                varchar(50),
+   description          varchar(500),
+   country              int,
+   province             int,
+   city                 int,
+   district             int,
+   address              varchar(500),
+   register_time        int(11),
+   point                int,
+   primary key (id)
+);
+
+/*==============================================================*/
+/* Table: member_profile_log                                    */
+/*==============================================================*/
+create table member_profile_log
+(
+   id                   int not null,
+   member_id            bigint,
+   nickname             varchar(50),
+   name                 varchar(20),
+   gender               tinyint comment '0：全部
+            1：男
+            2：女',
+   level                int,
+   avatar_url           varchar(500),
+   mobile_code          varchar(10),
+   mobile               varchar(50),
+   email                varchar(50),
+   description          varchar(500),
+   country              int,
+   province             int,
+   city                 int,
+   district             int,
+   address              varchar(500),
+   register_time        int(11),
+   update_time          int(11),
+   primary key (id)
+);
+
+/*==============================================================*/
+/* Table: member_tag                                            */
+/*==============================================================*/
+create table member_tag
+(
+   id                   bigint not null auto_increment,
+   member_id            bigint,
+   tag_id               int,
+   create_time          int(11),
+   primary key (id)
+);
+
+/*==============================================================*/
+/* Table: member_token                                          */
+/*==============================================================*/
+create table member_token
+(
+   member_id            bigint not null,
+   token                varchar(100),
+   create_time          int(10),
+   duration             int,
+   expired_time         int(10),
+   primary key (member_id)
+);
+
+alter table member_car add constraint FK_Reference_7 foreign key (member_id)
+      references member (id) on delete restrict on update restrict;
+
+alter table member_profile add constraint FK_Reference_6 foreign key (id)
+      references member (id) on delete restrict on update restrict;
+
+alter table member_profile_log add constraint FK_Reference_13 foreign key (member_id)
+      references member_profile (id) on delete restrict on update restrict;
+
+alter table member_tag add constraint FK_Reference_8 foreign key (member_id)
+      references member (id) on delete restrict on update restrict;
+
+alter table member_token add constraint FK_Reference_10 foreign key (member_id)
+      references member (id) on delete restrict on update restrict;
+
